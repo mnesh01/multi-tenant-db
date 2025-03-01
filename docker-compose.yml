@@ -1,0 +1,45 @@
+version: "3.8"
+
+networks:
+  multi-tenant-net:
+    driver: bridge
+
+services:
+  postgres-master:
+    image: postgres:latest
+    container_name: postgres-master
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: masterdb
+    ports:
+      - "5555:5555"
+    networks:
+      - multi-tenant-net
+
+  mysql-slave:
+    image: mysql:latest
+    container_name: mysql-slave
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: slavedb
+      MYSQL_USER: slaveuser
+      MYSQL_PASSWORD: slavepass
+    ports:
+      - "3306:3306"
+    networks:
+      - multi-tenant-net
+
+  sqlserver-slave:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: sqlserver-slave
+    restart: always
+    environment:
+      SA_PASSWORD: "Neshh123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - multi-tenant-net
