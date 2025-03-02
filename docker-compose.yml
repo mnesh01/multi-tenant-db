@@ -37,9 +37,14 @@ services:
     container_name: sqlserver-slave
     restart: always
     environment:
-      SA_PASSWORD: "Neshh123!"
       ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Neshh123."
+      MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
     networks:
       - multi-tenant-net
+    volumes:
+      - ./data/mssql/data:/var/opt/mssql/data
+      - ./data/mssql/log:/var/opt/mssql/log
+      - ./data/mssql/secrets:/var/opt/mssql/secrets
